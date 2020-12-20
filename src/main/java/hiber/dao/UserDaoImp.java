@@ -1,8 +1,6 @@
 package hiber.dao;
 
-import hiber.model.Car;
 import hiber.model.User;
-import org.hibernate.Cache;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -31,20 +29,11 @@ public class UserDaoImp implements UserDao {
 
     @Override
     public User getUserByCar(String model, int series) {
-        Query findUserByCar = sessionFactory.getCurrentSession().createQuery(
-                "FROM Car WHERE model = :model AND series = :series")
+        return (User) sessionFactory.getCurrentSession().createQuery("FROM User u LEFT OUTER JOIN FETCH u.car WHERE u.car.model=:model AND u.car.series =:series")
                 .setParameter("model", model)
-                .setParameter("series", series);
-        List<Car> findCarList = findUserByCar.getResultList();
-        if (!findCarList.isEmpty()){
-            Car finded = findCarList.get(0);
-            List<User> userList = listUsers();
-            return (User) userList.stream()
-                    .filter(user -> user.getCar().equals(finded))
-                    .findAny()
-                    .orElse(null);
-        }
-        return null;
+                .setParameter("series", series)
+                .setMaxResults(1)
+                .uniqueResult();
     }
 
 }

@@ -15,7 +15,9 @@
         <datasource-mapping>
           <factory-entry name="spring_hibernate" />
         </datasource-mapping>
-        <naming-strategy-map />
+        <naming-strategy-map>
+          <unit-entry name="spring_hibernate" />
+        </naming-strategy-map>
       </configuration>
     </facet>
   </component>

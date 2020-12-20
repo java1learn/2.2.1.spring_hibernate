@@ -39,7 +39,11 @@ public class MainApp {
             System.out.println();
         }
 
-        System.out.println(userService.getUserByCar("BMW", 3));
+        try {
+            System.out.println(userService.getUserByCar("BMW", 3));
+        }catch (NullPointerException e){
+            System.out.println("Пользователь не найден");
+        }
         context.close();
     }
 }
